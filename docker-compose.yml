@@ -17,7 +17,10 @@ services:
         - "/var/run/docker.sock:/tmp/docker.sock"
       command: "-ip 192.168.0.13 consul://192.168.0.13:8500"
     elb:
-      build: ./nginx-consul-template
+      build:
+        context: ./nginx-consul-template
+        args:
+          SERVICE: web
       restart: always
       hostname: elb-master
       environment:
@@ -31,4 +34,4 @@ services:
       ports:
         - "80"
       environment:
-        SERVER_NAME: web
+        SERVICE_NAME: web

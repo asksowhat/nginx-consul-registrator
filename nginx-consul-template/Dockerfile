@@ -17,14 +17,16 @@ ENV CT_FILE /etc/consul-templates/nginx.conf.ctmpl
 ENV NX_FILE /etc/nginx/conf.d/default.conf
 
 #Default Variables
+ARG SERVICE
 ENV CONSUL consul:8500
-ENV SERVICE consul-8500
+ENV SERVICE ${SERVICE}
 
 # Command will
 # 1. Write Consul Template File
 # 2. Start Nginx
 # 3. Start Consul Template
 COPY ./nginx.conf.ctmpl $CT_FILE
+RUN sed -i "s/k1c2b3/${SERVICE}/g" $CT_FILE
 
 CMD /usr/sbin/nginx -c /etc/nginx/nginx.conf \
 & CONSUL_TEMPLATE_LOG=debug consul-template \
