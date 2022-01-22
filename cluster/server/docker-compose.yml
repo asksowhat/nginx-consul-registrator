@@ -12,7 +12,7 @@ services:
         - "8400:8400"
         - "8500:8500"
         - "8600:8600"
-      command: "consul agent -retry-join ${CONSUL_MASTER_IP} -advertise ${CURRENT_IP} -node ${NODE_NAME} -data-dir /tmp/data-dir -client 0.0.0.0 -ui"
+      command: "consul agent -retry-join ${CONSUL_MASTER_IP} -advertise ${CURRENT_IP} -node ${CONSUL_NODE_NAME} -data-dir /tmp/data-dir -client 0.0.0.0 -ui"
     registrator:
       image: gliderlabs/registrator:latest
       restart: always
