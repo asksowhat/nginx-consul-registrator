@@ -1,0 +1,25 @@
+version: '3'
+services:
+    consul:
+      image: progrium/consul:latest
+      restart: always
+      hostname: consul-master
+      ports:
+        - "8400:8400"
+        - "8500:8500"
+        - "8600:53/udp"
+      command: "consul agent -retry-join ${CONSUL_MASTER_IP} -advertise ${CURRENT_IP} -node consul_client_01 -data-dir /tmp/data-dir -client 0.0.0.0 -ui"
+    registrator:
+      image: gliderlabs/registrator:latest
+      restart: always
+      volumes:
+        - "/var/run/docker.sock:/tmp/docker.sock"
+      command: "-ip ${CURRENT_IP} consul://${CURRENT_IP}:8500"
+    web:
+      image: nginx:latest
+      restart: always
+      hostname: nginx
+      ports:
+        - "80"
+      environment:
+        SERVICE_NAME: web
